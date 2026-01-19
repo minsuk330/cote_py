@@ -3,40 +3,40 @@ import sys
 def input():
     return sys.stdin.readline().rstrip()
 
-#전위중위후위 결과 출력
-
-def perorder_traversal(node):
+def preorder(node):
     if node=='.':
         return
-    print(node,end='')
-    perorder_traversal(tree[node][0])
-    perorder_traversal(tree[node][1])
+    print(node, end='')
+    preorder(tree[node][0])
+    preorder(tree[node][1])
 
-def inorder_traversal(node):
+def inorder(node):
     if node=='.':
         return
-    inorder_traversal(tree[node][0])
+    inorder(tree[node][0])
+    print(node, end='')
+    inorder(tree[node][1])
+
+def postorder(node):
+    if node=='.':
+        return
+    postorder(tree[node][0])
+    postorder(tree[node][1])
     print(node,end='')
-    inorder_traversal(tree[node][1])
     
 
-def postorder_traversal(node):
-    if node=='.':
-        return
-    postorder_traversal(tree[node][0])
-    postorder_traversal(tree[node][1])
-    print(node,end='')
+tree = {}
 
 N = int(input())
 
-tree = {}
 for _ in range(N):
-    parent,child1,child2 = input().split()
-    tree[parent] = (child1,child2)
-    
-perorder_traversal('A')
+    parent,c1,c2 = map(str,input().split())
+
+    tree[parent] = (c1,c2)
+
+preorder('A')
 print()
-inorder_traversal('A')
+inorder('A')
 print()
-postorder_traversal('A')
+postorder('A')
 print()
