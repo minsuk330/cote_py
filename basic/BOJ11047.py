@@ -13,14 +13,12 @@ for _ in range(N):
 
 count = 0
 
-while True:
-    num = numbers.pop()
-    if K<num:
-        continue
-    elif K>=num:
-        count+=1
-        K-=num
-        numbers.append(num)
-    if K==0:
+for i in range(N-1, -1, -1):
+    if K >= numbers[i]:
+        count +=K//numbers[i]
+        K %= numbers[i]
+    
+    if K == 0:
         break
+
 print(count)
