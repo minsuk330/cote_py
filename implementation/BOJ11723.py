@@ -9,37 +9,29 @@ M = int(input())
 arr = set()
 
 for _ in range(M):
-    cmds = list(map(str,input().split()))
-    if len(cmds)==2:
-        num_int = int(cmds[1])
+    cmds = input().split()
     cmd = cmds[0]
 
     if cmd=='add':
-        if num_int in arr:
-            continue
-        else:
-            arr.add(num_int)
+        arr.add(int(cmds[1]))
     elif cmd=='check':
-        if num_int in arr:
+        if int(cmds[1]) in arr:
             print(1)
         else:
             print(0)
     elif cmd=='remove':
-        if num_int in arr:
-            arr.remove(num_int)
+        if int(cmds[1]) in arr:
+            arr.remove(int(cmds[1]))
         else:
             continue
     elif cmd=='toggle':
-        if num_int in arr:
-            arr.remove(num_int)
+        if int(cmds[1]) in arr:
+            arr.remove(int(cmds[1]))
         else:
-            arr.add(num_int)
+            arr.add(int(cmds[1]))
 
     elif cmd=='all':
-        temp = set()
-        for i in range(20):
-            temp.add(i+1)
-        arr = temp
+        arr = set(range(1,21))
 
     else:
         arr.clear()
