@@ -7,14 +7,17 @@ def input():
 H,W = map(int,input().split())
 
 blocks = list(map(int,input().split()))
+left_max = [0]*W
+right_max = [0]*W
+left_max[0] = blocks[0]
+right_max[W-1] = blocks[-1]
 
-result  = 0
-for i,num in enumerate(blocks):
-    #각 인덱스를 기준으로 왼쪽과 오른쪽의 최대 높이를 계산
-    if W-1>i>0:
-        left = max(blocks[:i+1])
-        right = max(blocks[i+1:])
-        water = min(left,right)-num
-        if water>0:
-            result+=water
-print(result)
+for i in range(1,W):
+    left_max[i] = max(left_max[i-1],blocks[i])
+for i in range(W-2,-1,-1):
+    right_max[i] = max(right_max[i+1],blocks[i])
+result = 0
+for i in range(1,W-1):
+    water = min(left_max[i],right_max[i])-blocks[i]
+    if water>0:
+        result+=water
