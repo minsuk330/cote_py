@@ -7,17 +7,19 @@ def input():
 H,W = map(int,input().split())
 
 blocks = list(map(int,input().split()))
-left_max = [0]*W
-right_max = [0]*W
-left_max[0] = blocks[0]
-right_max[W-1] = blocks[-1]
 
-for i in range(1,W):
-    left_max[i] = max(left_max[i-1],blocks[i])
-for i in range(W-2,-1,-1):
-    right_max[i] = max(right_max[i+1],blocks[i])
+l,r = 0,W-1
+
+lmax,rmax = blocks[l],blocks[r]
+
 result = 0
-for i in range(1,W-1):
-    water = min(left_max[i],right_max[i])-blocks[i]
-    if water>0:
-        result+=water
+
+while l<r:
+    if lmax<=rmax:
+        l+=1
+        lmax = max(lmax,blocks[l])
+        result+=max(0,lmax-blocks[l])
+    else:
+        r-=1
+        rmax = max(rmax,blocks[r])
+        result+=max(0,rmax-blocks[r])
