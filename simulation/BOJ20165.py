@@ -1,38 +1,54 @@
 import sys
-def input(): return sys.stdin.readline().rstrip()
 
-N, M, R = map(int, input().split())
-dir = {'E': (0, 1), 'W': (0, -1), 'S': (1, 0), 'N': (-1, 0)}  # (dy, dx)
+def input():
+    return sys.stdin.readline().rstrip()
+#N은 행 M은 열
+N,M,R = map(int,input().split())
 
-board = [list(map(int, input().split())) for _ in range(N)]
-check = [['S'] * M for _ in range(N)]
-
-score = 0
-
+dir = {'E':(1,0),'W':(-1,0),'S':(0,1),'N':(0,-1)}  #=>열,행
+result = [] #넘어진건F 넘어지지 않은건 S
+check = {i:['S']*M for i in range(N)}
+board = []
+for i in range(N):
+    board.append(list(map(int,input().split())))
+a = []
+d = []
 for _ in range(R):
-    X, Y, D = input().split()
-    r = int(X) - 1
-    c = int(Y) - 1
-    dy, dx = dir[D]
+    a.append(input().split()) 
+    d.append(list(map(int,input().split())))
 
-    if check[r][c] == 'S':
-        rem = board[r][c]
-        nr, nc = r, c
+a_count = 0
+for i in range(R):
+    # 공격: 도미노 넘어뜨리기
+    row = int(a[i][0])-1 #행
+    col = int(a[i][1])-1 #열
+    D = a[i][2]
+##X행 Y열
+    if check[row][col] == 'S':  # 이미 서 있는 도미노만 넘어뜨릴 수 있음
+        dc,dr = dir[D] #열,행
+        height = board[row][col]
+        check[row][col] = 'F'
+        a_count += 1
 
-        while rem > 0 and 0 <= nr < N and 0 <= nc < M:
-            if check[nr][nc] == 'S':
+        nr,nc = row+dr,col+dc
+        remaning = height-1
+
+        while remaning>0 and N>nr>=0 and M>nc>=0:
+            if check[nr][nc]=='S':
                 check[nr][nc] = 'F'
-                score += 1
-                rem = max(rem, board[nr][nc])  # 더 긴 도미노 만나면 확장
-            rem -= 1
-            nr += dy
-            nc += dx
+                a_count+=1
+                remaning = max(remaning-1,board[nr][nc]-1)
+            else:
+                remaning-=1
+            
+            nr += dr
+            nc += dc
+    
+    row = int(d[i][0])-1
+    col = int(d[i][1])-1
+    check[row][col] = 'S'
 
-    X, Y = map(int, input().split())
-    r = X - 1
-    c = Y - 1
-    check[r][c] = 'S'
 
-print(score)
+print(a_count)
 for i in range(N):
     print(' '.join(check[i]))
