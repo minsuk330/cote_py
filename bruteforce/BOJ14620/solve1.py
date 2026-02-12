@@ -5,51 +5,42 @@ def input():
 #상하좌우
 direc = [(1,0),(-1,0),(0,-1),(0,1)]
 
-def dfs(idx,count,total_cost):
-    #종료조건
+def dfs(idx,count,total_price):
     if count==3:
-        return total_cost
-    min_cost = float('inf')
+        return total_price
     
+    min_price = float('inf')
+
     for k in range(idx,len(board_price)):
         i,j,price = board_price[k]
-
         #꽃 배치가 가능한가?
         if can_place(i,j):
-            #이제 배치를 한다.
             place_flower(i,j)
-            #다음 꽃 선택을 해야 한다.
-            result = dfs(k+1,count+1,total_cost+price)
-            min_cost = min(min_cost,result)
+            #각 부분별 결과값
+            result = dfs(k+1,count+1,total_price+price)
+            min_price = min(result,min_price)
             remove_flower(i,j)
 
-    return min_cost
-
+    return min_price
 def remove_flower(i,j):
     visited[i][j] = False
-
     for di,dj in direc:
-        ni,nj = i+di,j+dj
+        ni,nj = di+i,dj+j
         visited[ni][nj] = False
-        
-    
 def place_flower(i,j):
     visited[i][j] = True
-
     for di,dj in direc:
-        ni,nj = i+di,j+dj
+        ni,nj = di+i,dj+j
         visited[ni][nj] = True
-
 
 def can_place(i,j):
     if visited[i][j]:
         return False
     for di,dj in direc:
-        ni,nj = i+di,j+dj
+        ni,nj = di+i,dj+j
         if visited[ni][nj]:
             return False
     return True
-
 N = int(input())
 board = []
 visited = [[False]*N for _ in range(N)]
@@ -75,6 +66,5 @@ for i in range(N):
                     break
             else:
                 board_price.append((i,j,price))
-ans = dfs(0,0,0)
-print(ans)
 
+print(dfs(0,0,0))
